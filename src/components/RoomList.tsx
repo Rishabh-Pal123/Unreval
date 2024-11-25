@@ -6,7 +6,7 @@ import data from "../data.json";
 import { RoomDataList } from "../types";
 
 const RoomList: React.FC = () => {
-  const roomData = data as RoomDataList;
+  const roomData = data as RoomDataList | any;
 
   // Define state with initial rooms slice
   const [rooms, setRooms] = useState<any[]>(
