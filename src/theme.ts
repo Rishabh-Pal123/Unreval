@@ -1,0 +1,85 @@
+export const theme = {
+    colors: {
+      primary: "#1E90FF",
+      secondary: "#228B22",
+      success: "#28a745",
+      danger: "#dc3545",
+      warning: "#ffc107",
+      info: "#17a2b8",
+      light: "#f8f9fa",
+      dark: "#343a40",
+      white: "#FFFFFF",
+      black: "#000000",
+      gray: {
+        100: "#f8f9fa",
+        200: "#e9ecef",
+        300: "#dee2e6",
+        400: "#ced4da",
+        500: "#adb5bd",
+        600: "#6c757d",
+        700: "#495057",
+        800: "#343a40",
+        900: "#212529",
+      },
+      gradients: {
+        primary: "linear-gradient(90deg, #1E90FF 0%, #87CEEB 100%)",
+        secondary: "linear-gradient(90deg, #228B22 0%, #32CD32 100%)",
+      },
+    },
+    typography: {
+      fontSizes: {
+        xs: "12px",
+        sm: "14px",
+        md: "16px",
+        lg: "18px",
+        xl: "24px",
+        xxl: "32px",
+      },
+      fontWeights: {
+        normal: 400,
+        medium: 500,
+        bold: 700,
+      },
+      lineHeights: {
+        normal: "1.5",
+        relaxed: "1.75",
+        dense: "1.25",
+      },
+    },
+    dimensions: {
+      spacing: {
+        xs: "4px",
+        sm: "8px",
+        md: "16px",
+        lg: "24px",
+        xl: "32px",
+        xxl: "64px",
+      },
+      borderRadius: {
+        sm: "4px",
+        md: "8px",
+        lg: "12px",
+        xl: "16px",
+      },
+      breakpoints: {
+        xs: "320px",
+        sm: "576px",
+        md: "768px",
+        lg: "992px",
+        xl: "1200px",
+        xxl: "1400px",
+      },
+    },
+    shadows: {
+      sm: "0 1px 2px rgba(0, 0, 0, 0.05)",
+      md: "0 4px 6px rgba(0, 0, 0, 0.1)",
+      lg: "0 10px 20px rgba(0, 0, 0, 0.15)",
+      xl: "0 15px 30px rgba(0, 0, 0, 0.2)",
+    },
+    transitions: {
+      default: "all 0.3s ease-in-out",
+      fast: "all 0.2s ease-in-out",
+      slow: "all 0.5s ease-in-out",
+    },
+  };
+  
