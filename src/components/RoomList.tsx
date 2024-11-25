@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import SkeletonCard from "./SkeletonCard";
-import RoomCard from "./RoomCard";
+import RoomCard from "./RoomCard/RoomCard";
 import data from "../data.json";
-import { RoomDetails, RoomDataList } from "../types";
+import { RoomDataList } from "../types";
 
 const RoomList: React.FC = () => {
   const roomData = data as RoomDataList;
 
   // Define state with initial rooms slice
-  const [rooms, setRooms] = useState<RoomDetails[]>(
-    roomData?.rooms_by_serial_no?[0].rooms.slice(0, 10)
+  const [rooms, setRooms] = useState<any[]>(
+    roomData?.rooms_by_serial_no[0].rooms.slice(0, 10)
   );
 
   const { isLoading } = useInfiniteScroll(() => {
     setRooms((prev) => [
       ...prev,
-      ...roomData?.rooms_by_serial_no?[0].rooms.slice(
+      ...roomData?.rooms_by_serial_no[0].rooms.slice(
         prev.length,
         prev.length + 10
       )
