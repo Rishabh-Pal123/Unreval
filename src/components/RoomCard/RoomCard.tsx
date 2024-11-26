@@ -22,27 +22,27 @@ const RoomCardSummary = styled.div`
 `;
 
 const RoomName = styled.h3`
-  font-size: 20px; /* Larger font for the title */
-  font-weight: bold; /* Bold title */
-  color: #007bff; /* Blue color for visual appeal */
-  margin-bottom: 8px; /* Space between title and details */
+  font-size: 20px;
+  font-weight: bold;
+  color: #007bff; 
+  margin-bottom: 8px; 
 
   @media (max-width: 768px) {
-    font-size: 18px; /* Slightly smaller title font on mobile */
+    font-size: 18px; 
   }
 `;
 
 const RoomDetail = styled.p`
-  font-size: 16px; /* Standard font size for details */
-  color: #555; /* Muted text color */
-  margin: 4px 0; /* Space between details */
+  font-size: 16px; 
+  color: #555; 
+  margin: 4px 0; 
 
   strong {
-    color: #000; /* Bold text for labels */
+    color: #000; 
   }
 
   @media (max-width: 768px) {
-    font-size: 14px; /* Adjust detail text size */
+    font-size: 14px; 
   }
 `;
 const CardWrapper = styled.div`
