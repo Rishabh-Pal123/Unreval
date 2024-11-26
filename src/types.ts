@@ -575,6 +575,70 @@ export interface RoomDetails {
     package_cancellation_timeline: any | null;
 }
 
+export interface RoomsData{
+    name: string;
+    room_type_code: string;
+    variants_count: number;
+    images: string | null;
+    variants: Variants[];
+    properties: {
+        room_capacity: {
+            max_occupancy: number;
+            max_adult_with_children: number;
+            min_child_age: number;
+            max_child_age: number;
+            max_adult: number;
+            max_extra_bed: number;
+            max_children: number;
+        };
+        bed_type: string;
+        promotions: {
+            count: number;
+            special?: {
+                runno: number;
+                type: string;
+                special_name: string;
+                discount: number;
+                stay: number;
+            }[]
+        };
+        video_url?: {
+            med: string;
+        };
+        occupancy_info?: any;
+        room_amenities?: any;
+        room_images?: {
+            id: string;
+            key: string;
+            count: number;
+            image_urls: string[];
+            display_name: string;
+        }[]
+    };
+    no_of_adults: number | null;
+    no_of_children: number | null;
+    no_of_total_adults: number | null;
+    no_of_total_children: number | null;
+    children_ages: any[] | null;
+    passengers_details: any[] | null;
+    price: any | null;
+    booking_code: string | null;
+    booking_type: string | null;
+    extra_bed: any | null;
+    bedding_preference: string | null;
+    special_requests: string | null;
+    cancellation_status: string | null;
+    cancel_reason: string | null;
+    booking_reference_number: string | null;
+    additional_requests: string | null;
+    additional_services: string | null;
+    supplier_reference: string | null;
+    context: any | null;
+    package_price: any | null;
+    package_cancellation_info: any | null;
+    package_cancellation_timeline: any | null;
+}
+
 
 export interface RoomDataList {
     hotel_details: {
@@ -658,69 +722,7 @@ export interface RoomDataList {
     };
     rooms_by_serial_no: {
         serial_no: 0;
-        rooms: {
-            name: string;
-            room_type_code: string;
-            variants_count: number;
-            images: string | null;
-            variants: Variants[];
-            properties: {
-                room_capacity: {
-                    max_occupancy: number;
-                    max_adult_with_children: number;
-                    min_child_age: number;
-                    max_child_age: number;
-                    max_adult: number;
-                    max_extra_bed: number;
-                    max_children: number;
-                };
-                bed_type: string;
-                promotions: {
-                    count: number;
-                    special?: {
-                        runno: number;
-                        type: string;
-                        special_name: string;
-                        discount: number;
-                        stay: number;
-                    }[]
-                };
-                video_url?: {
-                    med: string;
-                };
-                occupancy_info?: any;
-                room_amenities?: any;
-                room_images?: {
-                    id: string;
-                    key: string;
-                    count: number;
-                    image_urls: string[];
-                    display_name: string;
-                }
-            };
-            no_of_adults: number | null;
-            no_of_children: number | null;
-            no_of_total_adults: number | null;
-            no_of_total_children: number | null;
-            children_ages: any[] | null;
-            passengers_details: any[] | null;
-            price: any | null;
-            booking_code: string | null;
-            booking_type: string | null;
-            extra_bed: any | null;
-            bedding_preference: string | null;
-            special_requests: string | null;
-            cancellation_status: string | null;
-            cancel_reason: string | null;
-            booking_reference_number: string | null;
-            additional_requests: string | null;
-            additional_services: string | null;
-            supplier_reference: string | null;
-            context: any | null;
-            package_price: any | null;
-            package_cancellation_info: any | null;
-            package_cancellation_timeline: any | null;
-        }[];
+        rooms: RoomsData[];
     }[];
     avail_id: string;
 }
