@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import SkeletonCard from "./SkeletonCard";
-import RoomCard from "./RoomCard/RoomCard";
+import RoomCard from "./RoomCard";
 import data from "../data.json";
 import { RoomDataList } from "../types";
 
@@ -15,14 +15,14 @@ const RoomList: React.FC = () => {
     const nextRooms = allRooms.slice(rooms.length, rooms.length + 5);
     setRooms((prev) => [...prev, ...nextRooms]);
     if (rooms.length + nextRooms.length >= allRooms.length) {
-      setHasMore(false); // No more rooms to fetch
+      setHasMore(false);
     }
   };
 
   const { isFetching } = useInfiniteScroll(hasMore, fetchMoreRooms);
 
   return (
-    <div className="room-list">
+    <div >
       {rooms.map((room, index) => (
         <RoomCard key={index} room={room} />
       ))}

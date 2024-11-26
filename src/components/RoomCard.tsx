@@ -1,24 +1,8 @@
 import React, { useState, lazy, Suspense } from "react";
-import { RoomsData, Variants } from "../../types";
+import { RoomsData, Variants } from "../types";
 import styled from "styled-components";
 
-const VariantCard = lazy(() => import("../VariantCard.tsx/VariantCard"));
-
-// const RoomCardSummary = styled.div`
-//   background-color: #f9f9f9; /* Light background for contrast */
-//   border: 1px solid #ddd; /* Subtle border */
-//   border-radius: 8px; /* Rounded corners */
-//   padding: 16px; /* Spacing inside the card  /* Light shadow for depth */
-//   transition: transform 0.2s ease-in-out; /* Animation for hover effect */
-
-//   &:hover {
-//     transform: translateY(-5px);
-//   }
-
-//   @media (max-width: 768px) {
-//     padding: 12px; 
-//   }
-// `;
+const VariantCard = lazy(() => import("./VariantCard"));
 
 const RoomName = styled.h3`
   font-size: 20px;
@@ -31,19 +15,19 @@ const RoomName = styled.h3`
   }
 `;
 
-const RoomDetail = styled.p`
-  font-size: 16px; 
-  color: #555; 
-  margin: 4px 0; 
+// const RoomDetail = styled.p`
+//   font-size: 16px; 
+//   color: #555; 
+//   margin: 4px 0; 
 
-  strong {
-    color: #000; 
-  }
+//   strong {
+//     color: #000; 
+//   }
 
-  @media (max-width: 768px) {
-    font-size: 14px; 
-  }
-`;
+//   @media (max-width: 768px) {
+//     font-size: 14px; 
+//   }
+// `;
 const CardWrapper = styled.div`
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -70,15 +54,14 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
 
   const {
     name,
-    room_type_code,
     properties,
     variants,
   } = room;
 
-  const initialVariantsCount = 2; // Number of variants to display initially
+  const initialVariantsCount = 2; 
   const displayedVariants = showAllVariants
     ? variants
-    : variants.slice(0, initialVariantsCount); // Conditionally show all or limited variants
+    : variants.slice(0, initialVariantsCount);
 
   const handleToggleVariants = () => {
     setShowAllVariants((prev) => !prev);
@@ -86,25 +69,11 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
 
   return (
     <CardWrapper>
-      {/* Room Summary */}
       <div>
     <RoomName>{name}</RoomName>
-    <RoomDetail>
-      <strong>Type:</strong> {room_type_code}
-    </RoomDetail>
-    <RoomDetail>
-      <strong>Max Occupancy:</strong> {properties.room_capacity.max_occupancy}
-    </RoomDetail>
-    <RoomDetail>
-      <strong>Bed Type:</strong> {properties.bed_type}
-    </RoomDetail>
-    <RoomDetail>
-      <strong>Promotions:</strong> {properties.promotions.count}
-    </RoomDetail>
   </div>
 
-
-      {/* Variants */}
+    {/* Variant Card */}
       {displayedVariants.map((item: Variants, index: number) => (
         <Suspense key={index} fallback={<div>Loading...</div>}>
           <VariantCard
@@ -115,7 +84,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
         </Suspense>
       ))}
 
-      {/* Show More/Less Button */}
+      {/* Click to See More */}
       <ShowMoreButton onClick={handleToggleVariants}>
         {showAllVariants ? "Click to see less" : "Click to see more"}
       </ShowMoreButton>

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Variants } from "../../types";
+import { Variants } from "../types";
 import styled from "styled-components";
+import { theme } from "../theme";
 
 interface VariantCardProps {
   variant: Variants;
@@ -204,7 +205,6 @@ const VariantCard: React.FC<VariantCardProps> = ({
           {total_price.promo_list.length > 0 && (
             <p className="promo">
               {total_price.promo_list[0].offer_title}
-              {/* {total_price.promo_list[0].offer_description} */}
             </p>
           )}
         </PricingSection>
@@ -221,7 +221,7 @@ const VariantCard: React.FC<VariantCardProps> = ({
 
         {/* Cancellation Policy */}
         <CancellationPolicy>
-          <h4 onClick={handleCancellation} style={{cursor: 'pointer'}}>Cancellation Policy </h4>
+          <h4 onClick={handleCancellation} style={{cursor: 'pointer', color: `${theme.colors.primary}`}}>{"Cancellation Policy >"} </h4>
           {cancellation && cancellation_timeline.cancellation_rules.map((rule, index) => (
             <p key={index}>
               <strong>{rule.title}</strong> - {rule.sub_title}
