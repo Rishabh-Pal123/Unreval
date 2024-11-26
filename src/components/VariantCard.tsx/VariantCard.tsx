@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Variants } from "../../types";
 import styled from "styled-components";
 
@@ -41,13 +41,13 @@ const MediaWrapper = styled.div`
   }
 
   .media {
-    width: 100%; /* Ensure media fills the container width */
-    height: auto; /* Maintain aspect ratio */
-    max-height: 380px; /* Limit height for better usability */
-    border-radius: 8px; /* Add rounded corners for aesthetics */
+    width: 100%;  
+    height: auto; 
+    max-height: 380px; 
+    border-radius: 8px; 
 
     @media (max-width: 768px) {
-      max-height: 280px; /* Adjust max height for smaller screens */
+      max-height: 280px;
     }
   }
 `;
@@ -73,7 +73,8 @@ const VariantName = styled.h3`
 
 const PricingSection = styled.div`
   margin-bottom: 16px;
-
+  display: flex;
+  gap: 5px;
   .discounted-price {
     color: #28a745;
     font-size: 16px;
@@ -86,19 +87,26 @@ const PricingSection = styled.div`
 
   .original-price {
     color: #007bff;
-    font-size: 14px;
+    font-size: 16px;
 
     @media (max-width: 768px) {
-      font-size: 12px;
+      font-size: 14px;
     }
   }
 
   .promo {
-    font-size: 14px;
+    font-size: 16px;
+    background-color:  ${({ theme }) => theme.colors.primary};
+    padding: 0 5px;
+    border-radius: 5px;
 
     @media (max-width: 768px) {
-      font-size: 12px;
+      font-size: 14px;
     }
+  }
+
+  @media(max-width: 768px){
+    justify-content: center;
   }
 `;
 
@@ -142,12 +150,18 @@ const VariantCard: React.FC<VariantCardProps> = ({
   room_images,
   video_url,
 }) => {
+
+  const [cancellation, setCancellation] = useState(false);
   const {
     name,
     total_price,
     display_properties,
     cancellation_timeline,
   } = variant;
+
+  const handleCancellation =()=>{
+    setCancellation(!cancellation);
+  }
 
   return (
     <Main>
@@ -189,8 +203,8 @@ const VariantCard: React.FC<VariantCardProps> = ({
           )}
           {total_price.promo_list.length > 0 && (
             <p className="promo">
-              {total_price.promo_list[0].offer_title}:{" "}
-              {total_price.promo_list[0].offer_description}
+              {total_price.promo_list[0].offer_title}
+              {/* {total_price.promo_list[0].offer_description} */}
             </p>
           )}
         </PricingSection>
@@ -207,8 +221,8 @@ const VariantCard: React.FC<VariantCardProps> = ({
 
         {/* Cancellation Policy */}
         <CancellationPolicy>
-          <h4>Cancellation Policy</h4>
-          {cancellation_timeline.cancellation_rules.map((rule, index) => (
+          <h4 onClick={handleCancellation} style={{cursor: 'pointer'}}>Cancellation Policy </h4>
+          {cancellation && cancellation_timeline.cancellation_rules.map((rule, index) => (
             <p key={index}>
               <strong>{rule.title}</strong> - {rule.sub_title}
             </p>

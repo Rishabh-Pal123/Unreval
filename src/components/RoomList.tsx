@@ -7,27 +7,27 @@ import { RoomDataList } from "../types";
 
 const RoomList: React.FC = () => {
   const roomData = data as RoomDataList | any;
+  const allRooms = roomData?.rooms_by_serial_no[0]?.rooms || [];
+  const [rooms, setRooms] = useState<any[]>(allRooms.slice(0, 5));
+  const [hasMore, setHasMore] = useState(rooms.length < allRooms.length);
 
-  const [rooms, setRooms] = useState<any[]>(
-    roomData?.rooms_by_serial_no[0].rooms.slice(0, 10)
-  );
+  const fetchMoreRooms = () => {
+    const nextRooms = allRooms.slice(rooms.length, rooms.length + 5);
+    setRooms((prev) => [...prev, ...nextRooms]);
+    if (rooms.length + nextRooms.length >= allRooms.length) {
+      setHasMore(false); // No more rooms to fetch
+    }
+  };
 
-  const { isLoading } = useInfiniteScroll(() => {
-    setRooms((prev) => [
-      ...prev,
-      ...roomData?.rooms_by_serial_no[0].rooms.slice(
-        prev.length,
-        prev.length + 10
-      )
-    ]);
-  });
+  const { isFetching } = useInfiniteScroll(hasMore, fetchMoreRooms);
 
   return (
-    <div className="room-list" >
+    <div className="room-list">
       {rooms.map((room, index) => (
         <RoomCard key={index} room={room} />
       ))}
-      {isLoading && <SkeletonCard />}
+      {isFetching && hasMore && <SkeletonCard />}
+      {!hasMore && <p>No more rooms to load.</p>}
     </div>
   );
 };

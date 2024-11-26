@@ -1,15 +1,57 @@
 import React, { useState, lazy, Suspense } from "react";
 import { RoomsData, Variants } from "../../types";
+import { theme } from "../../theme";
 import styled from "styled-components";
 
 const VariantCard = lazy(() => import("../VariantCard.tsx/VariantCard"));
 
+const RoomCardSummary = styled.div`
+  background-color: #f9f9f9; /* Light background for contrast */
+  border: 1px solid #ddd; /* Subtle border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 16px; /* Spacing inside the card  /* Light shadow for depth */
+  transition: transform 0.2s ease-in-out; /* Animation for hover effect */
+
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  @media (max-width: 768px) {
+    padding: 12px; 
+  }
+`;
+
+const RoomName = styled.h3`
+  font-size: 20px; /* Larger font for the title */
+  font-weight: bold; /* Bold title */
+  color: #007bff; /* Blue color for visual appeal */
+  margin-bottom: 8px; /* Space between title and details */
+
+  @media (max-width: 768px) {
+    font-size: 18px; /* Slightly smaller title font on mobile */
+  }
+`;
+
+const RoomDetail = styled.p`
+  font-size: 16px; /* Standard font size for details */
+  color: #555; /* Muted text color */
+  margin: 4px 0; /* Space between details */
+
+  strong {
+    color: #000; /* Bold text for labels */
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px; /* Adjust detail text size */
+  }
+`;
 const CardWrapper = styled.div`
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 16px;
   margin: 16px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background-color: ${({ theme }) => theme.colors.gray[200]};
 `;
 
 const ShowMoreButton = styled.span`
@@ -46,13 +88,22 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   return (
     <CardWrapper>
       {/* Room Summary */}
-      <div style={{ marginBottom: "16px" }} className="room-card-summary">
-        <h3>{name}</h3>
-        <p>Type: {room_type_code}</p>
-        <p>Max Occupancy: {properties.room_capacity.max_occupancy}</p>
-        <p>Bed Type: {properties.bed_type}</p>
-        <p>Promotions: {properties.promotions.count}</p>
-      </div>
+      <div>
+    <RoomName>{name}</RoomName>
+    <RoomDetail>
+      <strong>Type:</strong> {room_type_code}
+    </RoomDetail>
+    <RoomDetail>
+      <strong>Max Occupancy:</strong> {properties.room_capacity.max_occupancy}
+    </RoomDetail>
+    <RoomDetail>
+      <strong>Bed Type:</strong> {properties.bed_type}
+    </RoomDetail>
+    <RoomDetail>
+      <strong>Promotions:</strong> {properties.promotions.count}
+    </RoomDetail>
+  </div>
+
 
       {/* Variants */}
       {displayedVariants.map((item: Variants, index: number) => (

@@ -1,30 +1,35 @@
 import { useEffect, useState } from 'react';
 
-const useInfiniteScroll = (fetchMore: () => void) => {
-  const [isLoading, setIsLoading] = useState(false);
+const useInfiniteScroll = (
+  hasMore: boolean,
+  fetchMore: () => void
+) => {
+  const [isFetching, setIsFetching] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       if (
-        window.innerHeight + document.documentElement.scrollTop >=
-        document.documentElement.offsetHeight - 100
+        hasMore && 
+        window.innerHeight + window.scrollY >=
+        document.documentElement.offsetHeight - 100 &&
+        !isFetching
       ) {
-        setIsLoading(true);
-        fetchMore();
+        setIsFetching(true);
       }
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [fetchMore]);
+  }, [hasMore, isFetching]);
 
   useEffect(() => {
-    if (isLoading) {
-      setTimeout(() => setIsLoading(false), 1000);
+    if (isFetching) {
+      fetchMore();
+      setIsFetching(false);
     }
-  }, [isLoading]);
+  }, [isFetching, fetchMore]);
 
-  return { isLoading, fetchMore };
+  return { isFetching };
 };
 
 export default useInfiniteScroll;

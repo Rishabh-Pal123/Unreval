@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Navbar: React.FC = () => (
   <nav>
-      <div><Link to="/">Unravel</Link></div>
+      <h1><Link to="/">Unravel Rooms</Link></h1>
     
   </nav>
 );
