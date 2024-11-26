@@ -1,25 +1,24 @@
 import React, { useState, lazy, Suspense } from "react";
 import { RoomsData, Variants } from "../../types";
-import { theme } from "../../theme";
 import styled from "styled-components";
 
 const VariantCard = lazy(() => import("../VariantCard.tsx/VariantCard"));
 
-const RoomCardSummary = styled.div`
-  background-color: #f9f9f9; /* Light background for contrast */
-  border: 1px solid #ddd; /* Subtle border */
-  border-radius: 8px; /* Rounded corners */
-  padding: 16px; /* Spacing inside the card  /* Light shadow for depth */
-  transition: transform 0.2s ease-in-out; /* Animation for hover effect */
+// const RoomCardSummary = styled.div`
+//   background-color: #f9f9f9; /* Light background for contrast */
+//   border: 1px solid #ddd; /* Subtle border */
+//   border-radius: 8px; /* Rounded corners */
+//   padding: 16px; /* Spacing inside the card  /* Light shadow for depth */
+//   transition: transform 0.2s ease-in-out; /* Animation for hover effect */
 
-  &:hover {
-    transform: translateY(-5px);
-  }
+//   &:hover {
+//     transform: translateY(-5px);
+//   }
 
-  @media (max-width: 768px) {
-    padding: 12px; 
-  }
-`;
+//   @media (max-width: 768px) {
+//     padding: 12px; 
+//   }
+// `;
 
 const RoomName = styled.h3`
   font-size: 20px;
