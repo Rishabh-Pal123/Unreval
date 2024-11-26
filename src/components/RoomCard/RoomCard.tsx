@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import './RoomCard.css';
+import VariantCard from "../VariantCard.tsx/VariantCard";
+import { Variants } from "../../types";
 
 
 interface RoomCardProps {
@@ -18,26 +20,7 @@ interface RoomCardProps {
       discounted_price: number;
       currency: string;
     };
-    variants: {
-      variant_code: string;
-      variant_id: string;
-      name: string;
-      properties: {
-        price: { text: string; value: number; unit: string }[];
-        star_rating: number;
-        sub_heading: string | null;
-        dist_from_centre: { text: string };
-      };
-      cancellation_info: {
-        free_cancellation: number;
-        cancellation_rules: { date_info: string; description: string; cost: number | null }[];
-      };
-      total_price: {
-        total_price: number;
-        discounted_price: number;
-        currency: string;
-      };
-    }[];
+    variants: Variants[]
   };
 }
 
@@ -61,6 +44,24 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   return (
     <div className="room-card">
       <div className="room-card-summary">
+      {/* {variant?.video_url?.med ? (
+                        <video
+                            ref={videoRef}
+                            src={variant.video_url?.med}
+                            controls
+                            autoPlay={visible}
+                            muted
+                            loop
+                            className="media"
+                        />
+                    ) : variant?.images ? (
+                        <img
+                            src={variant.images || ""}
+                            alt={variant.name}
+                            className="media"
+                            loading="lazy"
+                        />
+                    ) : null} */}
         {images && <img src={images} alt={`${name} image`} className="room-image" />}
         <h3>{name}</h3>
         <p>Type: {room_type_code}</p>
@@ -71,30 +72,14 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
           Price: {total_price?.currency} {total_price?.discounted_price}
         </p>
         <button onClick={handleCardClick}>
-          {showVariants ? "Hide Details" : `View ${variants_count} Variants`}
+          {showVariants ? "Click to see less" : 'Click to see more'}
         </button>
       </div>
 
       {showVariants && (
-        <div className="room-variants">
-          <h4>Variants</h4>
-          {variants.map((variant) => (
-            <div key={variant.variant_id} className="variant-details">
-              <h5>{variant.name}</h5>
-              <p>Code: {variant.variant_code}</p>
-              <p>Price: {variant.total_price.currency} {variant.total_price.discounted_price}</p>
-              <p>Star Rating: {variant.properties.star_rating}</p>
-              <p>Distance from Centre: {variant?.properties?.dist_from_centre?.text}</p>
-              <p>Free Cancellation: {variant.cancellation_info.free_cancellation ? "Yes" : "No"}</p>
-              {variant.cancellation_info.cancellation_rules.map((rule, index) => (
-                <div key={index}>
-                  <p>Rule: {rule.date_info} - {rule.description}</p>
-                  <p>Cost: {rule.cost ? `${variant.total_price.currency} ${rule.cost}` : "No Charge"}</p>
-                </div>
-              ))}
-            </div>
-          ))}
-        </div>
+        variants.map((item:Variants)=>(
+          <VariantCard variant={item}/>
+        ))
       )}
     </div>
   );

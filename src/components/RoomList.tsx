@@ -8,7 +8,6 @@ import { RoomDataList } from "../types";
 const RoomList: React.FC = () => {
   const roomData = data as RoomDataList | any;
 
-  // Define state with initial rooms slice
   const [rooms, setRooms] = useState<any[]>(
     roomData?.rooms_by_serial_no[0].rooms.slice(0, 10)
   );
@@ -23,10 +22,8 @@ const RoomList: React.FC = () => {
     ]);
   });
 
-  console.log('rooms: ', rooms);
-
   return (
-    <div className="room-list">
+    <div className="room-list" >
       {rooms.map((room, index) => (
         <RoomCard key={index} room={room} />
       ))}

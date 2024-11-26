@@ -366,30 +366,157 @@ export interface MarkupShare {
 }
 
 
+export interface Variants {
+    cancellation_timeline: {
+        cancellation_rules: {
+            currently_here: boolean;
+            title: string;
+            sub_title: string;
+            type: number;
+            amount: number;
+            currency: string;
+            to_date: string | null;
+            from_date: string | null;
+        }[];
+        free_cancellation: number;
+        no_show: number;
+        no_show_description: string | null;
+        free_cancellation_description: string;
+    };
+    old_cancellation_timeline: {
+        cancellation_rules: {
+            currently_here: boolean;
+            title: string;
+            sub_title: string;
+            type: number;
+            amount: number;
+            currency: string;
+            to_date: string | null;
+            from_date: string | null;
+        }[];
+        free_cancellation: number;
+        no_show: number;
+        no_show_description: string | null;
+        free_cancellation_description: string;
+    };
+    is_discount: boolean;
+    context: any;
+    variant_code: string;
+    variant_id: string;
+    name: string;
+    properties: {
+        price: {
+            text: string;
+            type: string;
+            unit: string;
+            value: number;
+        }[];
+        budget: string;
+        star_rating: number;
+        stay_awards: string[];
+        sub_heading: string | null;
+        redirect_url: string;
+        redirect_text: string;
+        review_summary: {
+            tag: string;
+            source: string;
+            max_rating: number;
+            review_count: number;
+            review_rating: number;
+        }[];
+        dist_from_centre: {
+            text: string;
+            unit: string;
+            value: number;
+        };
+        primary_sub_category: string;
+    };
+    display_properties: {
+        name: string;
+        display_name: string;
+        icon_name: string;
+        order: string;
+        value: string;
+    }[];
+    additional_info: {
+        tariff_notes: string;
+        short_tariff_notes: string;
+    };
+    cancellation_info: {
+        free_cancellation: number;
+        free_cancellation_info: string;
+        free_cancel_description: string;
+        free_amendment_description: string | null;
+        cancellation_rules: {
+            date_info: string;
+            description: string;
+            cost: number | null;
+        }[];
+    };
+    total_price: {
+        total_price: number;
+        discounted_price: number;
+        total_price_rounded: number;
+        discounted_price_rounded: number;
+        currency: string;
+        price_break_up: {
+            unravel_markup: number;
+            total_sale_price: number;
+            dotw_discounted_price: number;
+            fixed_markup_price: number;
+            dynamic_markup_price: number;
+            base_price: number;
+            unravel_commission: number;
+            client_commission: number;
+            final_discounted_price: number;
+        }[];
+        previous_price: number | null;
+        previous_price_rounded: number | null;
+        price_changed: boolean | null;
+        offer_present: boolean;
+        promo: Promo;
+        promo_list: PromoList[];
+        markup: Markup;
+        markup_share: {
+            discount: number;
+            client_commission: number;
+            unravel_commission: number;
+        };
+    };
+    is_bookable: boolean;
+    valid_for_occupancy: any;
+    price_info: string;
+    original_cancellation_info: {
+        count: number;
+        rule: {
+            runno: number;
+            to_date?: string;
+            to_date_details?: string;
+            from_date?: string;
+            from_date_details?: string;
+            amend_charge: {
+                value: number;
+                formatted: string;
+            };
+            cancel_charge: {
+                value: number;
+                formatted: string;
+            };
+            charge: {
+                value: number;
+                formatted: string;
+            };
+        }[];
+    };
+    roomwise_coupon: any;
+}
+
 export interface RoomDetails {
     name: string;
     room_type_code: string;
     variants_count: number;
     images: string | null;
-    variants: {
-        cancellation_timeline: CancellationTimeline;
-        old_cancellation_timeline: CancellationTimeline;
-        is_discount: boolean;
-        context: any;
-        variant_code: string;
-        variant_id: string;
-        name: string;
-        properties: Properties;
-        display_properties: DisplayProperty[];
-        additional_info: AdditionalInfo;
-        cancellation_info: CancellationInfo;
-        total_price: TotalPrice;
-        is_bookable: boolean;
-        valid_for_occupancy: any;
-        price_info: string;
-        original_cancellation_info: OriginalCancellationInfo;
-        roomwise_coupon: any;
-    }[];
+    variants: Variants[];
     properties: {
         room_capacity: {
             max_occupancy: number;
@@ -536,150 +663,7 @@ export interface RoomDataList {
             room_type_code: string;
             variants_count: number;
             images: string | null;
-            variants: {
-                cancellation_timeline: {
-                    cancellation_rules: {
-                        currently_here: boolean;
-                        title: string;
-                        sub_title: string;
-                        type: number;
-                        amount: number;
-                        currency: string;
-                        to_date: string | null;
-                        from_date: string | null;
-                    }[];
-                    free_cancellation: number;
-                    no_show: number;
-                    no_show_description: string | null;
-                    free_cancellation_description: string;
-                };
-                old_cancellation_timeline: {
-                    cancellation_rules: {
-                        currently_here: boolean;
-                        title: string;
-                        sub_title: string;
-                        type: number;
-                        amount: number;
-                        currency: string;
-                        to_date: string | null;
-                        from_date: string | null;
-                    }[];
-                    free_cancellation: number;
-                    no_show: number;
-                    no_show_description: string | null;
-                    free_cancellation_description: string;
-                };
-                is_discount: boolean;
-                context: any;
-                variant_code: string;
-                variant_id: string;
-                name: string;
-                properties: {
-                    price: {
-                        text: string;
-                        type: string;
-                        unit: string;
-                        value: number;
-                    }[];
-                    budget: string;
-                    star_rating: number;
-                    stay_awards: string[];
-                    sub_heading: string | null;
-                    redirect_url: string;
-                    redirect_text: string;
-                    review_summary: {
-                        tag: string;
-                        source: string;
-                        max_rating: number;
-                        review_count: number;
-                        review_rating: number;
-                    }[];
-                    dist_from_centre: {
-                        text: string;
-                        unit: string;
-                        value: number;
-                    };
-                    primary_sub_category: string;
-                };
-                display_properties: {
-                    name: string;
-                    display_name: string;
-                    icon_name: string;
-                    order: string;
-                    value: string;
-                }[];
-                additional_info: {
-                    tariff_notes: string;
-                    short_tariff_notes: string;
-                };
-                cancellation_info: {
-                    free_cancellation: number;
-                    free_cancellation_info: string;
-                    free_cancel_description: string;
-                    free_amendment_description: string | null;
-                    cancellation_rules: {
-                        date_info: string;
-                        description: string;
-                        cost: number | null;
-                    }[];
-                };
-                total_price: {
-                    total_price: number;
-                    discounted_price: number;
-                    total_price_rounded: number;
-                    discounted_price_rounded: number;
-                    currency: string;
-                    price_break_up: {
-                        unravel_markup: number;
-                        total_sale_price: number;
-                        dotw_discounted_price: number;
-                        fixed_markup_price: number;
-                        dynamic_markup_price: number;
-                        base_price: number;
-                        unravel_commission: number;
-                        client_commission: number;
-                        final_discounted_price: number;
-                    }[];
-                    previous_price: number | null;
-                    previous_price_rounded: number | null;
-                    price_changed: boolean | null;
-                    offer_present: boolean;
-                    promo: Promo;
-                    promo_list: PromoList[];
-                    markup: Markup;
-                    markup_share: {
-                        discount: number;
-                        client_commission: number;
-                        unravel_commission: number;
-                    };
-                };
-                is_bookable: boolean;
-                valid_for_occupancy: any;
-                price_info: string;
-                original_cancellation_info: {
-                    count: number;
-                    rule: {
-                        runno: number;
-                        to_date?: string;
-                        to_date_details?: string;
-                        from_date?: string;
-                        from_date_details?: string;
-                        amend_charge: {
-                            value: number;
-                            formatted: string;
-                        };
-                        cancel_charge: {
-                            value: number;
-                            formatted: string;
-                        };
-                        charge: {
-                            value: number;
-                            formatted: string;
-                        };
-                    }[];
-                };
-                roomwise_coupon: any;
-            }[];
+            variants: Variants[];
             properties: {
                 room_capacity: {
                     max_occupancy: number;
