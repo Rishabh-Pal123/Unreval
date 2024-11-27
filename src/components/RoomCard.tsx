@@ -1,4 +1,4 @@
-import React, { useState, lazy, Suspense } from "react";
+import React, { useState, useMemo, lazy, Suspense } from "react";
 import { RoomsData, Variants } from "../types";
 import styled from "styled-components";
 
@@ -8,26 +8,13 @@ const RoomName = styled.h3`
   font-size: 20px;
   font-weight: bold;
   color: #007bff; 
-  margin-bottom: 8px; 
+  margin-bottom: 8px;
 
   @media (max-width: 768px) {
-    font-size: 18px; 
+    font-size: 18px;
   }
 `;
 
-// const RoomDetail = styled.p`
-//   font-size: 16px; 
-//   color: #555; 
-//   margin: 4px 0; 
-
-//   strong {
-//     color: #000; 
-//   }
-
-//   @media (max-width: 768px) {
-//     font-size: 14px; 
-//   }
-// `;
 const CardWrapper = styled.div`
   border: 1px solid #ccc;
   border-radius: 8px;
@@ -58,10 +45,12 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
     variants,
   } = room;
 
-  const initialVariantsCount = 2; 
-  const displayedVariants = showAllVariants
-    ? variants
-    : variants.slice(0, initialVariantsCount);
+  const initialVariantsCount = 2;
+
+  // Memoize displayed variants to avoid recalculating on every render
+  const displayedVariants = useMemo(() => {
+    return showAllVariants ? variants : variants.slice(0, initialVariantsCount);
+  }, [showAllVariants, variants]);
 
   const handleToggleVariants = () => {
     setShowAllVariants((prev) => !prev);
@@ -70,10 +59,9 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   return (
     <CardWrapper>
       <div>
-    <RoomName>{name}</RoomName>
-  </div>
+        <RoomName>{name}</RoomName>
+      </div>
 
-    {/* Variant Card */}
       {displayedVariants.map((item: Variants, index: number) => (
         <Suspense key={index} fallback={<div>Loading...</div>}>
           <VariantCard
@@ -84,7 +72,6 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
         </Suspense>
       ))}
 
-      {/* Click to See More */}
       <ShowMoreButton onClick={handleToggleVariants}>
         {showAllVariants ? "Click to see less" : "Click to see more"}
       </ShowMoreButton>

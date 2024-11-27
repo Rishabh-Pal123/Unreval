@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { Variants } from "../types";
 import styled from "styled-components";
 import { theme } from "../theme";
@@ -45,7 +45,7 @@ const MediaWrapper = styled.div`
     width: 100%;  
     height: auto; 
     max-height: 380px; 
-    border-radius: 8px; 
+    border-radius: 8px;
 
     @media (max-width: 768px) {
       max-height: 280px;
@@ -151,18 +151,25 @@ const VariantCard: React.FC<VariantCardProps> = ({
   room_images,
   video_url,
 }) => {
-
   const [cancellation, setCancellation] = useState(false);
-  const {
-    name,
-    total_price,
-    display_properties,
-    cancellation_timeline,
-  } = variant;
 
-  const handleCancellation =()=>{
-    setCancellation(!cancellation);
-  }
+  const { name, display_properties, total_price, cancellation_timeline } =
+    variant;
+
+  // Memoize cancellation rules to avoid recalculations
+  const cancellationRules = useMemo(
+    () =>
+      cancellation
+        ? cancellation_timeline.cancellation_rules.map((rule, index) => (
+            <p key={index}>
+              <strong>{rule.title}</strong> - {rule.sub_title}
+            </p>
+          ))
+        : null,
+    [cancellation, cancellation_timeline]
+  );
+
+  const handleCancellationToggle = () => setCancellation((prev) => !prev);
 
   return (
     <Main>
@@ -209,24 +216,18 @@ const VariantCard: React.FC<VariantCardProps> = ({
           )}
         </PricingSection>
 
-        {/* Display Properties */}
-        <RoomDetails>
+{/* Display Properties */}
+<RoomDetails>
           {display_properties.map((property) => (
             <li key={property.name}>
-              <span>{property.display_name}: </span>
+              <strong>{property.display_name}: </strong>
               <span>{property.value}</span>
             </li>
           ))}
         </RoomDetails>
-
-        {/* Cancellation Policy */}
         <CancellationPolicy>
-          <h4 onClick={handleCancellation} style={{cursor: 'pointer', color: `${theme.colors.primary}`}}>{"Cancellation Policy >"} </h4>
-          {cancellation && cancellation_timeline.cancellation_rules.map((rule, index) => (
-            <p key={index}>
-              <strong>{rule.title}</strong> - {rule.sub_title}
-            </p>
-          ))}
+          <h4 onClick={handleCancellationToggle} style={{color: `${theme.colors.primary}`, cursor: 'pointer'}}>{"Cancellation Policy >"}</h4>
+          {cancellationRules}
         </CancellationPolicy>
       </Content>
     </Main>

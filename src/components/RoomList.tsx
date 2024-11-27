@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import SkeletonCard from "./SkeletonCard";
 import RoomCard from "./RoomCard";
@@ -8,8 +8,12 @@ import { RoomDataList } from "../types";
 const RoomList: React.FC = () => {
   const roomData = data as RoomDataList | any;
   const allRooms = roomData?.rooms_by_serial_no[0]?.rooms || [];
+
   const [rooms, setRooms] = useState<any[]>(allRooms.slice(0, 5));
   const [hasMore, setHasMore] = useState(rooms.length < allRooms.length);
+
+  // Memoize the filtered/sliced room data to avoid recalculations on every render
+  const displayedRooms = useMemo(() => rooms, [rooms]);
 
   const fetchMoreRooms = () => {
     const nextRooms = allRooms.slice(rooms.length, rooms.length + 5);
@@ -22,8 +26,8 @@ const RoomList: React.FC = () => {
   const { isFetching } = useInfiniteScroll(hasMore, fetchMoreRooms);
 
   return (
-    <div >
-      {rooms.map((room, index) => (
+    <div>
+      {displayedRooms.map((room, index) => (
         <RoomCard key={index} room={room} />
       ))}
       {isFetching && hasMore && <SkeletonCard />}
