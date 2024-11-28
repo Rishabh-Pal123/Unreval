@@ -2,7 +2,6 @@ import "./App.css";
 import RoomList from "./components/RoomList";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -14,7 +13,6 @@ function App() {
             <Route path="/" element={<RoomList />} />
           </Routes>
         </main>
-        <Footer />
       </div>
     </Router>
   );

@@ -1,6 +1,7 @@
 import React, { useState, useMemo, lazy, Suspense } from "react";
 import { RoomsData, Variants } from "../types";
 import styled from "styled-components";
+import SkeletonCard from "../util/SkeletonCard";
 
 const VariantCard = lazy(() => import("./VariantCard"));
 
@@ -37,6 +38,7 @@ interface RoomCardProps {
 
 const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
   const [showAllVariants, setShowAllVariants] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     name,
@@ -46,7 +48,6 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
 
   const initialVariantsCount = 2;
 
-  // Memoize displayed variants to avoid recalculating on every render
   const displayedVariants = useMemo(() => {
     return showAllVariants ? variants : variants.slice(0, initialVariantsCount);
   }, [showAllVariants, variants]);
@@ -55,28 +56,42 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
     setShowAllVariants((prev) => !prev);
   };
 
+  const loadVariants = () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  };
+
+  React.useEffect(() => {
+    loadVariants();
+  }, [variants]);
+
   return (
     <CardWrapper>
       <div>
         <RoomName>{name}</RoomName>
       </div>
 
-      {displayedVariants.map((item: Variants, index: number) => (
-        <Suspense key={index} fallback={<div>Loading...</div>}>
-          <VariantCard
-            variant={item}
-            room_images={properties?.room_images}
-            video_url={properties?.video_url}
-          />
-        </Suspense>
-      ))}
+      {isLoading ? (
+        <SkeletonCard />
+      ) : (
+        displayedVariants.map((item: Variants, index: number) => (
+          <Suspense key={index} fallback={<SkeletonCard />}>
+            <VariantCard
+              variant={item}
+              room_images={properties?.room_images}
+              video_url={properties?.video_url}
+            />
+          </Suspense>
+        ))
+      )}
 
       {variants.length > initialVariantsCount && (
         <ShowMoreButton onClick={handleToggleVariants}>
           {showAllVariants ? "Click to see less" : "Click to see more"}
         </ShowMoreButton>
       )}
-
     </CardWrapper>
   );
 };

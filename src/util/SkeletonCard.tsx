@@ -11,15 +11,20 @@ const shimmer = keyframes`
   }
 `;
 
+const Main = styled.div`
+  padding: 10px 0px;
+  width: 100%;
+`
+
 // Styled components
 const SkeletonWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
+  align-items: start;
   background: #f4f4f4;
   border-radius: 8px;
-  padding: 16px;
-  width: 300px;
+  padding: 20px 20px;
+  margin: 50px 0px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 `;
 
@@ -37,10 +42,17 @@ const SkeletonElement = styled.div`
 `;
 
 const SkeletonImage = styled(SkeletonElement)`
+  flex: 1;
   width: 100%;
-  height: 180px;
+  height: 200px;
   margin-bottom: 16px;
+  padding: 15px 15px;
 `;
+
+const TextSection = styled.div`
+ flex:1;
+ padding: 10px 10px;
+`
 
 interface SkeletonTextProps {
   width: string;
@@ -49,18 +61,24 @@ interface SkeletonTextProps {
 const SkeletonText = styled(SkeletonElement)<SkeletonTextProps>`
   width: ${({ width }) => width};
   height: 16px;
-  margin-bottom: 8px;
+  margin-bottom: 20px;
 `;
 
 // SkeletonCard Component
 const SkeletonCard: React.FC = () => {
   return (
+      <Main>
     <SkeletonWrapper>
       <SkeletonImage />
+      <TextSection>
       <SkeletonText width="80%" />
       <SkeletonText width="60%" />
       <SkeletonText width="90%" />
+      <SkeletonText width="70%" />
+      <SkeletonText width="50%" />
+      </TextSection>
     </SkeletonWrapper>
+      </Main>
   );
 };
 

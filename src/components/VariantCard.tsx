@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Variants } from "../types";
 import styled from "styled-components";
 import { theme } from "../theme";
+import SkeletonLoader from "../util/SkeletonLoader";
 
 interface VariantCardProps {
   variant: Variants;
@@ -156,6 +157,7 @@ const VariantCard: React.FC<VariantCardProps> = ({
   const [isVideoVisible, setIsVideoVisible] = useState(false);
   const { name, display_properties, total_price, cancellation_timeline } =
     variant;
+    const [mediaLoading, setMediaLoading] = useState(true); 
 
   const handleCancellationToggle = () => setCancellation((prev) => !prev);
 
@@ -165,7 +167,7 @@ const VariantCard: React.FC<VariantCardProps> = ({
         const entry = entries[0];
         setIsVideoVisible(entry.isIntersecting);
       },
-      { threshold: 0.5 } // Trigger when 50% of the video is visible
+      { threshold: 0.5 } 
     );
 
     if (videoRef.current) {
@@ -187,18 +189,13 @@ const VariantCard: React.FC<VariantCardProps> = ({
       }
     }
   }, [isVideoVisible]);
-  useEffect(()=>{
-    if(room_images){
 
-      console.log('room_images: ', room_images);
-    console.log('room_images[0].image_urls[0]: ', room_images[0].image_urls)
-    }
-  },[])
   return (
     <Main>
       <MediaWrapper>
+      {mediaLoading && <SkeletonLoader height="100%" />} 
         {video_url?.med ? (
-          <video ref={videoRef} src={video_url?.med} muted loop className="media" />
+          <video ref={videoRef} src={video_url?.med} muted loop className="media" onLoadedData={() => setMediaLoading(false)} style={{ display: mediaLoading ? "none" : "block" }} />
         ) : room_images ? (
           <img
             src={room_images[0].image_urls[0]}
@@ -213,6 +210,8 @@ const VariantCard: React.FC<VariantCardProps> = ({
             alt={variant.name}
             className="media"
             loading="lazy"
+            onLoad={() => setMediaLoading(false)}
+            style={{ display: mediaLoading ? "none" : "block" }}
           />
         ) : null}
       </MediaWrapper>

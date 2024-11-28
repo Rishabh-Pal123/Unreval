@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from "react";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import SkeletonCard from "./SkeletonCard";
 import RoomCard from "./RoomCard";
 import data from "../data.json";
 import { RoomDataList } from "../types";
+import Loader from "../util/Loader";
 
 const RoomList: React.FC = () => {
   const roomData = data as RoomDataList | any;
@@ -30,7 +30,7 @@ const RoomList: React.FC = () => {
       {displayedRooms.map((room, index) => (
         <RoomCard key={index} room={room} />
       ))}
-      {isFetching && hasMore && <SkeletonCard />}
+      {isFetching && <Loader />}
       {!hasMore && <p>No more rooms to load.</p>}
     </div>
   );
