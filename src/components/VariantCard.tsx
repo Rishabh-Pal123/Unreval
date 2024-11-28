@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Variants } from "../types";
 import styled from "styled-components";
 import { theme } from "../theme";
@@ -197,42 +197,38 @@ const VariantCard: React.FC<VariantCardProps> = ({
 }) => {
   const [cancellation, setCancellation] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  const [isVideoVisible, setIsVideoVisible] = useState(false);
+  // const [isVisible, setIsVisible] = useState(false);
   const { name, display_properties, total_price, cancellation_timeline } =
     variant;
   const [mediaLoading, setMediaLoading] = useState(true);
 
   const handleCancellationToggle = () => setCancellation((prev) => !prev);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const entry = entries[0];
-        setIsVideoVisible(entry.isIntersecting);
-      },
-      { threshold: 0.5 } // Trigger when 50% of the video is visible
-    );
+  // const handleVisibility = useCallback((entries: IntersectionObserverEntry[]) => {
+  //   const entry = entries[0];
+  //   setIsVisible(entry.isIntersecting);
+  // }, []);
 
-    if (videoRef.current) {
-      observer.observe(videoRef.current);
-    }
+  // useEffect(() => {
+  //   const observer = new IntersectionObserver(handleVisibility, {
+  //     threshold: 0.5, // Trigger when at least 50% of the video is visible
+  //   });
+  //   if (videoRef.current) observer.observe(videoRef.current);
 
-    return () => {
-      if (videoRef.current) {
-        observer.unobserve(videoRef.current);
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (videoRef.current) observer.unobserve(videoRef.current);
+  //   };
+  // }, [handleVisibility]);
 
-  useEffect(() => {
-    if (videoRef.current) {
-      if (isVideoVisible) {
-        videoRef.current.play();
-      } else {
-        videoRef.current.pause();
-      }
-    }
-  }, [isVideoVisible]);
+  // useEffect(() => {
+  //   if (videoRef.current) {
+  //     if (isVisible) {
+  //       videoRef.current.play().catch(() => {}); // Catch play() errors in case autoplay is blocked
+  //     } else {
+  //       videoRef.current.pause();
+  //     }
+  //   }
+  // }, [isVisible]);
 
   return (
     <Main>
@@ -244,6 +240,7 @@ const VariantCard: React.FC<VariantCardProps> = ({
             src={video_url?.med}
             muted
             loop
+            preload="auto"
             className="media"
             onLoadedData={() => setMediaLoading(false)}
             style={{ display: mediaLoading ? "none" : "block" }}

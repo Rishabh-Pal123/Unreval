@@ -1,7 +1,7 @@
-import React, { useState, useMemo, lazy, Suspense } from "react";
-import { RoomsData, Variants } from "../types";
+import React, { useState, useMemo, lazy, Suspense, useEffect } from "react";
 import styled from "styled-components";
 import SkeletonCard from "../util/SkeletonCard";
+import { Variants } from "../types";
 
 const VariantCard = lazy(() => import("./VariantCard"));
 
@@ -33,19 +33,14 @@ const ShowMoreButton = styled.span`
 `;
 
 interface RoomCardProps {
-  room: RoomsData;
+  room: any;
 }
 
-const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
+const RoomCard: React.FC<RoomCardProps> = React.memo(({ room }) => {
   const [showAllVariants, setShowAllVariants] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  const {
-    name,
-    properties,
-    variants,
-  } = room;
-
+  const { name, properties, variants } = room;
   const initialVariantsCount = 2;
 
   const displayedVariants = useMemo(() => {
@@ -56,27 +51,18 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
     setShowAllVariants((prev) => !prev);
   };
 
-  const loadVariants = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  };
-
-  React.useEffect(() => {
-    loadVariants();
+  useEffect(() => {
+    const timeout = setTimeout(() => setIsLoading(false), 500); // Simulate loading delay
+    return () => clearTimeout(timeout);
   }, [variants]);
 
   return (
     <CardWrapper>
-      <div>
-        <RoomName>{name}</RoomName>
-      </div>
-
+      <RoomName>{name}</RoomName>
       {isLoading ? (
         <SkeletonCard />
       ) : (
-        displayedVariants.map((item: Variants, index: number) => (
+        displayedVariants.map((item:Variants, index: number) => (
           <Suspense key={index} fallback={<SkeletonCard />}>
             <VariantCard
               variant={item}
@@ -86,14 +72,13 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
           </Suspense>
         ))
       )}
-
       {variants.length > initialVariantsCount && (
         <ShowMoreButton onClick={handleToggleVariants}>
-          {showAllVariants ? "Click to see less" : "Click to see more"}
+          {showAllVariants ? "Show Less" : "Show More"}
         </ShowMoreButton>
       )}
     </CardWrapper>
   );
-};
+});
 
 export default RoomCard;
