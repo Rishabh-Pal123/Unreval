@@ -42,9 +42,9 @@ const MediaWrapper = styled.div`
   }
 
   .media {
-    width: 100%;  
-    height: auto; 
-    max-height: 380px; 
+    width: 100%;
+    height: auto;
+    max-height: 380px;
     border-radius: 8px;
 
     @media (max-width: 768px) {
@@ -54,7 +54,7 @@ const MediaWrapper = styled.div`
 `;
 
 const Content = styled.div`
-  flex: 2;
+  flex: 1;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -97,7 +97,7 @@ const PricingSection = styled.div`
 
   .promo {
     font-size: 16px;
-    background-color:  ${({ theme }) => theme.colors.primary};
+    background-color: ${({ theme }) => theme.colors.primary};
     padding: 0 5px;
     border-radius: 5px;
 
@@ -106,7 +106,7 @@ const PricingSection = styled.div`
     }
   }
 
-  @media(max-width: 768px){
+  @media (max-width: 768px) {
     justify-content: center;
   }
 `;
@@ -175,13 +175,7 @@ const VariantCard: React.FC<VariantCardProps> = ({
     <Main>
       <MediaWrapper>
         {video_url?.med ? (
-          <video
-            src={video_url?.med}
-            controls
-            muted
-            loop
-            className="media"
-          />
+          <video src={video_url?.med} controls muted loop className="media" />
         ) : room_images ? (
           <img
             src={room_images[0].image_urls[0] || ""}
@@ -210,14 +204,12 @@ const VariantCard: React.FC<VariantCardProps> = ({
             </p>
           )}
           {total_price.promo_list.length > 0 && (
-            <p className="promo">
-              {total_price.promo_list[0].offer_title}
-            </p>
+            <p className="promo">{total_price.promo_list[0].offer_title}</p>
           )}
         </PricingSection>
 
-{/* Display Properties */}
-<RoomDetails>
+        {/* Display Properties */}
+        <RoomDetails>
           {display_properties.map((property) => (
             <li key={property.name}>
               <strong>{property.display_name}: </strong>
@@ -226,9 +218,17 @@ const VariantCard: React.FC<VariantCardProps> = ({
           ))}
         </RoomDetails>
         <CancellationPolicy>
-          <h4 onClick={handleCancellationToggle} style={{color: `${theme.colors.primary}`, cursor: 'pointer'}}>{"Cancellation Policy >"}</h4>
+          <h4
+            onClick={handleCancellationToggle}
+            style={{ color: `${theme.colors.primary}`, cursor: "pointer" }}
+          >
+            {"Cancellation Policy >"}
+          </h4>
           {cancellationRules}
         </CancellationPolicy>
+        <div>
+          <button style={{backgroundColor: `${theme.colors.primary}`}}>Select</button>
+        </div>
       </Content>
     </Main>
   );

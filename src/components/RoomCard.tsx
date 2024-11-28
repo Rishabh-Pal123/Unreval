@@ -7,7 +7,6 @@ const VariantCard = lazy(() => import("./VariantCard"));
 const RoomName = styled.h3`
   font-size: 20px;
   font-weight: bold;
-  color: #007bff; 
   margin-bottom: 8px;
 
   @media (max-width: 768px) {
@@ -21,7 +20,8 @@ const CardWrapper = styled.div`
   padding: 16px;
   margin: 16px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background-color: ${({ theme }) => theme.colors.gray[200]};
+  background-color: #7f92f2;
+  // background-color: ${({ theme }) => theme.colors.blue};
 `;
 
 const ShowMoreButton = styled.span`
@@ -75,6 +75,7 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
       <ShowMoreButton onClick={handleToggleVariants}>
         {showAllVariants ? "Click to see less" : "Click to see more"}
       </ShowMoreButton>
+
     </CardWrapper>
   );
 };
