@@ -26,16 +26,23 @@ const Main = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  transition: all 0.3s ease;
 
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
+  }
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   }
 `;
 
 const MediaWrapper = styled.div`
   flex: 1;
   margin-right: 16px;
+  position: relative;
 
   @media (max-width: 768px) {
     margin-right: 0;
@@ -47,9 +54,43 @@ const MediaWrapper = styled.div`
     height: auto;
     max-height: 380px;
     border-radius: 8px;
+    object-fit: cover;
+    transition: all 0.3s ease;
 
     @media (max-width: 768px) {
       max-height: 280px;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  .media-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+
+    &:hover {
+      opacity: 1;
+    }
+
+    .play-button {
+      font-size: 40px;
+      color: #fff;
+      cursor: pointer;
     }
   }
 `;
@@ -132,6 +173,8 @@ const CancellationPolicy = styled.div`
   h4 {
     font-size: 16px;
     margin-bottom: 8px;
+    cursor: pointer;
+    color: ${({ theme }) => theme.colors.primary};
 
     @media (max-width: 768px) {
       font-size: 14px;
@@ -157,7 +200,7 @@ const VariantCard: React.FC<VariantCardProps> = ({
   const [isVideoVisible, setIsVideoVisible] = useState(false);
   const { name, display_properties, total_price, cancellation_timeline } =
     variant;
-    const [mediaLoading, setMediaLoading] = useState(true); 
+  const [mediaLoading, setMediaLoading] = useState(true);
 
   const handleCancellationToggle = () => setCancellation((prev) => !prev);
 
@@ -167,7 +210,7 @@ const VariantCard: React.FC<VariantCardProps> = ({
         const entry = entries[0];
         setIsVideoVisible(entry.isIntersecting);
       },
-      { threshold: 0.5 } 
+      { threshold: 0.5 } // Trigger when 50% of the video is visible
     );
 
     if (videoRef.current) {
@@ -180,6 +223,7 @@ const VariantCard: React.FC<VariantCardProps> = ({
       }
     };
   }, []);
+
   useEffect(() => {
     if (videoRef.current) {
       if (isVideoVisible) {
@@ -193,9 +237,17 @@ const VariantCard: React.FC<VariantCardProps> = ({
   return (
     <Main>
       <MediaWrapper>
-      {mediaLoading && <SkeletonLoader height="100%" />} 
+        {mediaLoading && <SkeletonLoader height="100%" />}
         {video_url?.med ? (
-          <video ref={videoRef} src={video_url?.med} muted loop className="media" onLoadedData={() => setMediaLoading(false)} style={{ display: mediaLoading ? "none" : "block" }} />
+          <video
+            ref={videoRef}
+            src={video_url?.med}
+            muted
+            loop
+            className="media"
+            onLoadedData={() => setMediaLoading(false)}
+            style={{ display: mediaLoading ? "none" : "block" }}
+          />
         ) : room_images ? (
           <img
             src={room_images[0].image_urls[0]}
@@ -214,6 +266,11 @@ const VariantCard: React.FC<VariantCardProps> = ({
             style={{ display: mediaLoading ? "none" : "block" }}
           />
         ) : null}
+        {video_url?.med && !mediaLoading && (
+          <div className="media-overlay">
+            <div className="play-button">▶</div>
+          </div>
+        )}
       </MediaWrapper>
       <Content>
         {/* Variant Name */}
@@ -248,10 +305,7 @@ const VariantCard: React.FC<VariantCardProps> = ({
           ))}
         </RoomDetails>
         <CancellationPolicy>
-          <h4
-            onClick={handleCancellationToggle}
-            style={{ color: `${theme.colors.primary}`, cursor: "pointer" }}
-          >
+          <h4 onClick={handleCancellationToggle}>
             {"Cancellation Policy >"}
           </h4>
           {cancellation &&
@@ -262,7 +316,16 @@ const VariantCard: React.FC<VariantCardProps> = ({
             ))}
         </CancellationPolicy>
         <div>
-          <button style={{ backgroundColor: `${theme.colors.primary}` }}>
+          <button
+            style={{
+              backgroundColor: `${theme.colors.primary}`,
+              padding: "10px 20px",
+              color: "#fff",
+              borderRadius: "5px",
+              cursor: "pointer",
+              fontWeight: "bold",
+            }}
+          >
             Select
           </button>
         </div>
