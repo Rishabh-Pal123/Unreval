@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import { Variants } from "../types";
 import styled from "styled-components";
 import { theme } from "../theme";
@@ -63,34 +63,6 @@ const MediaWrapper = styled.div`
 
     &:hover {
       opacity: 0.8;
-    }
-  }
-
-  .media-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-
-    @media (max-width: 768px) {
-      display: none;
-    }
-
-    &:hover {
-      opacity: 1;
-    }
-
-    .play-button {
-      font-size: 40px;
-      color: #fff;
-      cursor: pointer;
     }
   }
 `;
@@ -197,38 +169,38 @@ const VariantCard: React.FC<VariantCardProps> = ({
 }) => {
   const [cancellation, setCancellation] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-  // const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const { name, display_properties, total_price, cancellation_timeline } =
     variant;
   const [mediaLoading, setMediaLoading] = useState(true);
 
   const handleCancellationToggle = () => setCancellation((prev) => !prev);
 
-  // const handleVisibility = useCallback((entries: IntersectionObserverEntry[]) => {
-  //   const entry = entries[0];
-  //   setIsVisible(entry.isIntersecting);
-  // }, []);
+  const handleVisibility = useCallback((entries: IntersectionObserverEntry[]) => {
+    const entry = entries[0];
+    setIsVisible(entry.isIntersecting);
+  }, []);
 
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(handleVisibility, {
-  //     threshold: 0.5, // Trigger when at least 50% of the video is visible
-  //   });
-  //   if (videoRef.current) observer.observe(videoRef.current);
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleVisibility, {
+      threshold: 0.5,
+    });
+    if (videoRef.current) observer.observe(videoRef.current);
 
-  //   return () => {
-  //     if (videoRef.current) observer.unobserve(videoRef.current);
-  //   };
-  // }, [handleVisibility]);
+    return () => {
+      if (videoRef.current) observer.unobserve(videoRef.current);
+    };
+  }, [handleVisibility]);
 
-  // useEffect(() => {
-  //   if (videoRef.current) {
-  //     if (isVisible) {
-  //       videoRef.current.play().catch(() => {}); // Catch play() errors in case autoplay is blocked
-  //     } else {
-  //       videoRef.current.pause();
-  //     }
-  //   }
-  // }, [isVisible]);
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isVisible) {
+        videoRef.current.play().catch(() => {});
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isVisible]);
 
   return (
     <Main>
@@ -263,11 +235,6 @@ const VariantCard: React.FC<VariantCardProps> = ({
             style={{ display: mediaLoading ? "none" : "block" }}
           />
         ) : null}
-        {video_url?.med && !mediaLoading && (
-          <div className="media-overlay">
-            <div className="play-button">▶</div>
-          </div>
-        )}
       </MediaWrapper>
       <Content>
         {/* Variant Name */}
