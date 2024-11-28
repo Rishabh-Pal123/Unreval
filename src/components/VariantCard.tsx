@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Variants } from "../types";
 import styled from "styled-components";
 import { theme } from "../theme";
@@ -152,33 +152,64 @@ const VariantCard: React.FC<VariantCardProps> = ({
   video_url,
 }) => {
   const [cancellation, setCancellation] = useState(false);
-
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [isVideoVisible, setIsVideoVisible] = useState(false);
   const { name, display_properties, total_price, cancellation_timeline } =
     variant;
 
-  // Memoize cancellation rules to avoid recalculations
-  const cancellationRules = useMemo(
-    () =>
-      cancellation
-        ? cancellation_timeline.cancellation_rules.map((rule, index) => (
-            <p key={index}>
-              <strong>{rule.title}</strong> - {rule.sub_title}
-            </p>
-          ))
-        : null,
-    [cancellation, cancellation_timeline]
-  );
-
   const handleCancellationToggle = () => setCancellation((prev) => !prev);
 
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        setIsVideoVisible(entry.isIntersecting);
+      },
+      { threshold: 0.5 } // Trigger when 50% of the video is visible
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      if (videoRef.current) {
+        observer.unobserve(videoRef.current);
+      }
+    };
+  }, []);
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isVideoVisible) {
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [isVideoVisible]);
+  useEffect(()=>{
+    if(room_images){
+
+      console.log('room_images: ', room_images);
+    console.log('room_images[0].image_urls[0]: ', room_images[0].image_urls)
+    }
+  },[])
   return (
     <Main>
       <MediaWrapper>
         {video_url?.med ? (
-          <video src={video_url?.med} controls muted loop className="media" />
+          <video ref={videoRef} src={video_url?.med} muted loop className="media" />
         ) : room_images ? (
           <img
-            src={room_images[0].image_urls[0] || ""}
+            src={room_images[0].image_urls[0]}
+            srcSet={`
+              ${room_images[0]?.image_urls[0]} 480w,
+              ${room_images[0]?.image_urls[1]} 768w,
+              ${room_images[0]?.image_urls[2]} 1200w
+            `}
+            sizes="(max-width: 480px) 480px, 
+                   (max-width: 768px) 768px, 
+                   1200px"
             alt={variant.name}
             className="media"
             loading="lazy"
@@ -224,10 +255,17 @@ const VariantCard: React.FC<VariantCardProps> = ({
           >
             {"Cancellation Policy >"}
           </h4>
-          {cancellationRules}
+          {cancellation &&
+            cancellation_timeline.cancellation_rules.map((rule, index) => (
+              <p key={index}>
+                <strong>{rule.title}</strong> - {rule.sub_title}
+              </p>
+            ))}
         </CancellationPolicy>
         <div>
-          <button style={{backgroundColor: `${theme.colors.primary}`}}>Select</button>
+          <button style={{ backgroundColor: `${theme.colors.primary}` }}>
+            Select
+          </button>
         </div>
       </Content>
     </Main>

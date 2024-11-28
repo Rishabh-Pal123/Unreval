@@ -21,6 +21,7 @@ export const theme = {
         800: "#343a40",
         900: "#212529",
       },
+      blue: '#7f92f2',
       gradients: {
         primary: "linear-gradient(90deg, #1E90FF 0%, #87CEEB 100%)",
         secondary: "linear-gradient(90deg, #228B22 0%, #32CD32 100%)",

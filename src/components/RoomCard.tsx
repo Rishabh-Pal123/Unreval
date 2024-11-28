@@ -18,10 +18,9 @@ const CardWrapper = styled.div`
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 16px;
-  margin: 16px 0;
+  margin: 100px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  background-color: #7f92f2;
-  // background-color: ${({ theme }) => theme.colors.blue};
+  background-color: ${({ theme }) => theme.colors.blue};
 `;
 
 const ShowMoreButton = styled.span`
@@ -72,9 +71,11 @@ const RoomCard: React.FC<RoomCardProps> = ({ room }) => {
         </Suspense>
       ))}
 
-      <ShowMoreButton onClick={handleToggleVariants}>
-        {showAllVariants ? "Click to see less" : "Click to see more"}
-      </ShowMoreButton>
+      {variants.length > initialVariantsCount && (
+        <ShowMoreButton onClick={handleToggleVariants}>
+          {showAllVariants ? "Click to see less" : "Click to see more"}
+        </ShowMoreButton>
+      )}
 
     </CardWrapper>
   );
